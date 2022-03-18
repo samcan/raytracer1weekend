@@ -32,6 +32,12 @@ int main() {
     
     for (int y=IMAGE_HEIGHT-1; y>=0; y--) {
         for (int x=0; x<IMAGE_WIDTH; x++) {
+            // add progress indicator to standard error (cerr)
+            //  OK that's a pretty cool trick from the book. By putting a \r
+            //  in front of the text, it's keeping it all on one line and
+            //  constantly updating the progress in the same spot.
+            cerr << "\rScanlines remaining: " << y << ' ' << std::flush;
+
             red = static_cast<float>(x)/IMAGE_WIDTH * 256;
             green = static_cast<float>(y)/IMAGE_HEIGHT * 256;
             
