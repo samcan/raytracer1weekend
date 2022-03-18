@@ -1,4 +1,6 @@
 #include <iostream>
+#include "color.h"
+#include "vec3.h"
 
 using namespace std;
 
@@ -22,13 +24,9 @@ int main() {
     //  - He has red go from 0 (off) on the left and 1 (on) on the right
     //  - Green goes from 0 at the bottom to 1 at the top
     //  - Blue is constant at 0.25
-    float red;
-    float green;
-    float blue = 0.25;
-
-    int red_int;
-    int green_int;
-    int blue_int = blue * 256;
+    double red;
+    double green;
+    double blue = 0.25;
     
     for (int y=IMAGE_HEIGHT-1; y>=0; y--) {
         for (int x=0; x<IMAGE_WIDTH; x++) {
@@ -38,15 +36,11 @@ int main() {
             //  constantly updating the progress in the same spot.
             cerr << "\rScanlines remaining: " << y << ' ' << std::flush;
 
-            red = static_cast<float>(x)/IMAGE_WIDTH * 256;
-            green = static_cast<float>(y)/IMAGE_HEIGHT * 256;
-            
-            red_int = static_cast<int>(red);
-            green_int = static_cast<int>(green);
+            red = static_cast<double>(x)/IMAGE_WIDTH;
+            green = static_cast<double>(y)/IMAGE_HEIGHT;
 
-            cout << red_int << " ";
-            cout << green_int << " ";
-            cout << blue_int << endl;
+            color c = color(red, green, blue);
+            write_color(cout, c);
         }
     }
 }
