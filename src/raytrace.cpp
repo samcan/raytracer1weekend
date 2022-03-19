@@ -7,6 +7,7 @@ using namespace std;
 
 color ray_color(const ray& r);
 inline void update_render_status(int scanline);
+bool hit_sphere(const point3& center, double radius, const ray& r);
 
 int main() {
     // we'll start out by creating just a simple PPM test file. We'll output
@@ -69,6 +70,10 @@ inline void update_render_status(int scanline) {
 }
 
 color ray_color(const ray& r) {
+    if (hit_sphere(point3(0, 0, -1), 0.5, r)) {
+        return color(1.0, 0.0, 0.0);
+    }
+
     // get unit vector with same direction as ray r
     vec3 unit_direction = unit_vector(r.direction());
     // this constrains the y value into the range 0.0 <= t <= 1.0
@@ -84,4 +89,13 @@ color ray_color(const ray& r) {
     color start_color(1.0, 1.0, 1.0);
     color end_color(0.5, 0.7, 1.0);
     return (1-t)*start_color + t*end_color;
+}
+
+bool hit_sphere(const point3& center, double radius, const ray& r) {
+    vec3 oc = r.origin() - center;
+    auto a = dot(r.direction(), r.direction());
+    auto b = 2.0 * dot(oc, r.direction());
+    auto c = dot(oc, oc) - pow(radius, 2);
+    auto discriminant = pow(b, 2) - 4*a*c;
+    return (discriminant > 0);
 }
