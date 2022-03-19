@@ -4,6 +4,8 @@
 
 using namespace std;
 
+inline void update_render_status(int scanline);
+
 int main() {
     // we'll start out by creating just a simple PPM test file. We'll output
     // the PPM data to the standard console (cout), which can then be redirected
@@ -34,7 +36,7 @@ int main() {
             //  OK that's a pretty cool trick from the book. By putting a \r
             //  in front of the text, it's keeping it all on one line and
             //  constantly updating the progress in the same spot.
-            cerr << "\rScanlines remaining: " << y << ' ' << std::flush;
+            update_render_status(y);
 
             red = static_cast<double>(x)/IMAGE_WIDTH;
             green = static_cast<double>(y)/IMAGE_HEIGHT;
@@ -43,4 +45,8 @@ int main() {
             write_color(cout, c);
         }
     }
+}
+
+inline void update_render_status(int scanline) {
+    cerr << "\rScanlines remaining: " << scanline << ' ' << std::flush;   
 }
