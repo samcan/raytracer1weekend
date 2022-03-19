@@ -81,7 +81,7 @@ color ray_color(const ray& r) {
     // notes from experimentation:
     //  - I thought that changing the 1 to a diff value would adjust the
     //  horizontal location of the gradient, but it didn't?
-    color start_color(0.0, 0.0, 0.0);
+    color start_color(1.0, 1.0, 1.0);
     color end_color(0.5, 0.7, 1.0);
     return (1-t)*start_color + t*end_color;
 }
