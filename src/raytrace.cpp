@@ -3,8 +3,6 @@
 #include "vec3.h"
 #include "ray.h"
 
-using namespace std;
-
 color ray_color(const ray& r);
 inline void update_render_status(int scanline);
 bool hit_sphere(const point3& center, double radius, const ray& r);
@@ -42,7 +40,9 @@ int main() {
 
     // output test image
     // PPM header
-    cout << "P3" << endl << IMAGE_WIDTH << " " << IMAGE_HEIGHT << endl << "255" << endl;
+    std::cout << "P3" << std::endl;
+    std::cout << IMAGE_WIDTH << " " << IMAGE_HEIGHT << std::endl;
+    std::cout << "255" << std::endl;
     
     // PPM image data
     // each row of PPM file is a RGB pixel with space chars in between each part
@@ -60,13 +60,13 @@ int main() {
             // the vector?
             ray r(origin, vp_lower_left_corner + u*vp_horizontal + v*vp_vertical - origin);
             color pixel_color = ray_color(r);
-            write_color(cout, pixel_color);
+            write_color(std::cout, pixel_color);
         }
     }
 }
 
 inline void update_render_status(int scanline) {
-    cerr << "\rScanlines remaining: " << scanline << ' ' << std::flush;   
+    std::cerr << "\rScanlines remaining: " << scanline << ' ' << std::flush;   
 }
 
 color ray_color(const ray& r) {
