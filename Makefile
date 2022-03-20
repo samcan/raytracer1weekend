@@ -32,6 +32,7 @@ raytrace.o: $(SRC_PATH)/raytrace.cpp
 
 tests: $(SRC_PATH)/tests/test_vec3.cpp
 	$(CC) $(FLAGS_TESTS) $(LFLAGS_TESTS) $(SRC_PATH)/tests/test_vec3.cpp -o $(TESTS_TARGET)
+	$(TESTS_TARGET)
 
 clean:
 	rm -f $(OBJ_PATH)/$(OBJS) $(TARGET) $(TESTS_TARGET)
