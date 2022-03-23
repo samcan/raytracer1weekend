@@ -5,7 +5,7 @@
 
 color ray_color(const ray& r);
 inline void update_render_status(int scanline);
-bool hit_sphere(const point3& center, double radius, const ray& r);
+double hit_sphere(const point3& center, double radius, const ray& r);
 
 int main() {
     // we'll start out by creating just a simple PPM test file. We'll output
@@ -70,14 +70,16 @@ inline void update_render_status(int scanline) {
 }
 
 color ray_color(const ray& r) {
-    if (hit_sphere(point3(0, 0, -1), 0.5, r)) {
-        return color(1.0, 0.0, 0.0);
+    auto t = hit_sphere(point3(0, 0, -1), 0.5, r);
+    if (t > 0.0) {
+        vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1));
+        return 0.5*color(N.x()+1, N.y()+1, N.z()+1);
     }
 
     // get unit vector with same direction as ray r
     vec3 unit_direction = unit_vector(r.direction());
     // this constrains the y value into the range 0.0 <= t <= 1.0
-    auto t = 0.5*(unit_direction.y() + 1.0);
+    t = 0.5*(unit_direction.y() + 1.0);
 
     // linear blend of white at t=0.0 and blue at t=1.0
     // formula:
@@ -91,11 +93,15 @@ color ray_color(const ray& r) {
     return (1-t)*start_color + t*end_color;
 }
 
-bool hit_sphere(const point3& center, double radius, const ray& r) {
+double hit_sphere(const point3& center, double radius, const ray& r) {
     vec3 oc = r.origin() - center;
     auto a = dot(r.direction(), r.direction());
     auto b = 2.0 * dot(oc, r.direction());
     auto c = dot(oc, oc) - pow(radius, 2);
     auto discriminant = pow(b, 2) - 4*a*c;
-    return (discriminant > 0);
+    if (discriminant < 0) {
+        return -1.0;
+    } else {
+        return (-b - sqrt(discriminant)) / (2.0*a);
+    }
 }
