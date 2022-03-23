@@ -95,13 +95,13 @@ color ray_color(const ray& r) {
 
 double hit_sphere(const point3& center, double radius, const ray& r) {
     vec3 oc = r.origin() - center;
-    auto a = dot(r.direction(), r.direction());
-    auto b = 2.0 * dot(oc, r.direction());
-    auto c = dot(oc, oc) - pow(radius, 2);
-    auto discriminant = pow(b, 2) - 4*a*c;
+    auto a = r.direction().length_squared();
+    auto half_b = dot(oc, r.direction());
+    auto c = oc.length_squared() - pow(radius, 2.0);
+    auto discriminant = pow(half_b, 2.0) - a*c;
     if (discriminant < 0) {
         return -1.0;
     } else {
-        return (-b - sqrt(discriminant)) / (2.0*a);
+        return (-half_b - sqrt(discriminant)) / a;
     }
 }
